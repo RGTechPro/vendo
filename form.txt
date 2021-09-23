@@ -1,0 +1,83 @@
+sonam gupta bewafa hai
+
+
+Features
+locations of vender and shopkepeers
+highlight vendor on maps
+products of vendors
+live locations vendor 
+time reminder of vendors
+make in india search dominos but local screet foods will appears (tag replace)
+highlighted  locations
+setting page (change menu,timing, phoneno)
+
+sections> specials farm product directly from farm  
+
+sections> specials house hold womens products 
+
+sections> special child products 
+
+sections> specialy able people 
+	
+vendor form **********
+
+list [
+	services
+	farm
+	vendor
+	house women
+]
+
+gender
+shops or vendor images imp
+menu pic or you can write it on pen paper  imp
+phone no   imp
+name (muthilal dukanwala) imp
+birth age  imp
+adhar card and adhar no authenciations
+special disablity 
+age of shop 
+tags -pizza imp
+	-cloth
+	-fast food
+timing imp
+plus live location if vendor  permissions imp
+local name imp
+description optional
+home delivery
+packaging 
+
+
+farm form
+
+
+
+
+
+{
+
+name : '',
+location:{
+
+}
+tags:[];
+age:[];
+gender
+18
+
+}
+
+shop type
+
+vendor 
+shop
+house hold worker
+technicin
+
+
+
+
+
+
+
+
