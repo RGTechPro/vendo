@@ -616,10 +616,15 @@ class MyCustomFormState extends State<MyCustomForm> {
                       ],
                     ),
                   ),
-                new Container(
-                    padding: const EdgeInsets.only(left: 150.0, top: 40.0),
+                Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(15),
                     child: new TextButton(
-                      child: const Text('Submit'),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.lightGreen)),
+                      child: const Text('Submit',
+                          style: TextStyle(color: Colors.white, fontSize: 25)),
                       onPressed: null,
                     )),
               ],
