@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vendo/commonComponents/snackme.dart';
+import 'package:vendo/enumerations/farmer_type.dart';
+import 'package:vendo/enumerations/service_type.dart';
 import 'package:vendo/firebase/bucket.dart';
 import 'package:vendo/firebase/cloudstore.dart';
 import 'package:vendo/models/model_user.dart';
+import 'package:vendo/models/seller_model.dart';
 
 class FormPage extends StatelessWidget {
   @override
@@ -50,7 +53,9 @@ class MyCustomFormState extends State<MyCustomForm> {
   List<bool> isLiveSelected = [true, false];
   List<bool> isFarmSelected = [true, false, false];
 
-
+  service_type serviceType = service_type.Street_Vendor;
+  SellerUniversal sellerUniversal = new SellerUniversal.fromDefault();
+  
   List<String> imageUpload01 = [];
   List<String> imageUpload02 = [];
   List<String> imageUpload03 = [];
@@ -98,16 +103,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                         ],
                         onPressed: (int index) {
                           setState(() {
-                            for (int buttonIndex = 0;
-                                buttonIndex < isSelected.length;
-                                buttonIndex++) {
-                              if (buttonIndex == index) {
-                                isSelected[buttonIndex] = true;
-                              } else {
-                                isSelected[buttonIndex] = false;
-                              }
-                            }
+                            isSelected = [false, false, false, false, false];
+                            serviceType = service_type.values.elementAt(index);
+                            isSelected[serviceType.index] = true;
                           });
+                          sellerUniversal.serviceType = serviceType;
                         },
                         isSelected: isSelected),
                   ]),
@@ -130,6 +130,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    onChanged:(value){sellerUniversal.fullName = value;},
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
                           borderSide: BorderSide.none,
@@ -145,6 +146,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    onChanged:(value){sellerUniversal.phoneNo = value;},
                     keyboardType: TextInputType.phone,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
@@ -164,6 +166,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    onChanged:(value){sellerUniversal.date = dateCtl.text;},
                     controller: dateCtl,
                     onTap: () async {
                       DateTime date = DateTime(1900);
@@ -220,16 +223,10 @@ class MyCustomFormState extends State<MyCustomForm> {
                             ),
                           ],
                           onPressed: (int index) {
+                            sellerUniversal.gender = index;
                             setState(() {
-                              for (int buttonIndex = 0;
-                                  buttonIndex < isGenderSelected.length;
-                                  buttonIndex++) {
-                                if (buttonIndex == index) {
-                                  isGenderSelected[buttonIndex] = true;
-                                } else {
-                                  isGenderSelected[buttonIndex] = false;
-                                }
-                              }
+                              isGenderSelected = [false, false, false];
+                              isGenderSelected[index] = true;
                             });
                           },
                           isSelected: isGenderSelected),
@@ -263,16 +260,10 @@ class MyCustomFormState extends State<MyCustomForm> {
                             ),
                           ],
                           onPressed: (int index) {
+                            sellerUniversal.isSpeciallyAbled = index == 0 ? true : false;
                             setState(() {
-                              for (int buttonIndex = 0;
-                                  buttonIndex < isSpecialSelected.length;
-                                  buttonIndex++) {
-                                if (buttonIndex == index) {
-                                  isSpecialSelected[buttonIndex] = true;
-                                } else {
-                                  isSpecialSelected[buttonIndex] = false;
-                                }
-                              }
+                              isSpecialSelected = [false, false];
+                              isSpecialSelected[index] = true;
                             });
                           },
                           isSelected: isSpecialSelected),
@@ -282,6 +273,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    onChanged: (value){sellerUniversal.aadharNumber=value;},
                     keyboardType: TextInputType.phone,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
@@ -300,6 +292,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    onChanged: (value){sellerUniversal.localName=value;},
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
                           borderSide: BorderSide.none,
@@ -315,6 +308,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    onChanged: (value){sellerUniversal.address=value;},
                     maxLines: 2,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
@@ -331,6 +325,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    onChanged: (value){sellerUniversal.timing=value;},
                     keyboardType: TextInputType.datetime,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
@@ -344,7 +339,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                     ),
                   ),
                 ),
-                if (isSelected[3])
+                if (serviceType == service_type.Farmer)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
@@ -376,16 +371,10 @@ class MyCustomFormState extends State<MyCustomForm> {
                               ),
                             ],
                             onPressed: (int index) {
+                              sellerUniversal.farmerType = farmer_type.values.elementAt(index);
                               setState(() {
-                                for (int buttonIndex = 0;
-                                    buttonIndex < isFarmSelected.length;
-                                    buttonIndex++) {
-                                  if (buttonIndex == index) {
-                                    isFarmSelected[buttonIndex] = true;
-                                  } else {
-                                    isFarmSelected[buttonIndex] = false;
-                                  }
-                                }
+                                isFarmSelected = [false, false, false];
+                                isFarmSelected[index] = true;
                               });
                             },
                             isSelected: isFarmSelected),
@@ -396,6 +385,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      onChanged: (value){sellerUniversal.servicesProvided=value;},
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderSide: BorderSide.none,
@@ -413,6 +403,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      onChanged: (value){sellerUniversal.charges=value;},
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
@@ -430,6 +421,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    onChanged: (value){sellerUniversal.description=value;},
                     maxLines: 2,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
@@ -447,6 +439,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: TextFormField(
+                      onChanged: (value){sellerUniversal.shopName=value;},
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                             borderSide: BorderSide.none,
@@ -526,6 +519,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      onChanged: (value){sellerUniversal.packagingInfo=value;},
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderSide: BorderSide.none,
@@ -567,16 +561,10 @@ class MyCustomFormState extends State<MyCustomForm> {
                               ),
                             ],
                             onPressed: (int index) {
+                              sellerUniversal.isHomeDeliveryAvaliable = index==0?true:false;
                               setState(() {
-                                for (int buttonIndex = 0;
-                                    buttonIndex < isHomeDeliverySelected.length;
-                                    buttonIndex++) {
-                                  if (buttonIndex == index) {
-                                    isHomeDeliverySelected[buttonIndex] = true;
-                                  } else {
-                                    isHomeDeliverySelected[buttonIndex] = false;
-                                  }
-                                }
+                                isSelected = [false, false];
+                                isSelected[index] = true;
                               });
                             },
                             isSelected: isHomeDeliverySelected),
@@ -611,16 +599,10 @@ class MyCustomFormState extends State<MyCustomForm> {
                               ),
                             ],
                             onPressed: (int index) {
+                              sellerUniversal.isHomeDeliveryAvaliable = index==0?true:false;
                               setState(() {
-                                for (int buttonIndex = 0;
-                                    buttonIndex < isLiveSelected.length;
-                                    buttonIndex++) {
-                                  if (buttonIndex == index) {
-                                    isLiveSelected[buttonIndex] = true;
-                                  } else {
-                                    isLiveSelected[buttonIndex] = false;
-                                  }
-                                }
+                                isLiveSelected = [false, false];
+                                isLiveSelected[index] = true;
                               });
                             },
                             isSelected: isLiveSelected),
@@ -666,10 +648,10 @@ class MyCustomFormState extends State<MyCustomForm> {
 
   void buttonSubmit() {
     print("Submitting a form!");
-    Seller seller = new Seller("sellerName", "email", "name", "phoneNumber", "profilePictureUrl", Timestamp.fromDate(DateTime.now()));
-
+    // Seller seller = new Seller("sellerName", "email", "name", "phoneNumber", "profilePictureUrl", Timestamp.fromDate(DateTime.now()));
     showSnack(context, "Submitting form, Wait for results!");
-    var f = addSellerRecord(seller);
+    print(sellerUniversal.toMap().toString());
+    var f = addSellerRecord(sellerUniversal);
     f.then((value) => showSnack(context, "Success!"))
     .catchError((error) => showSnack(context, "An error occured: $error"));
   }

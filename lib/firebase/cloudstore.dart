@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vendo/commonComponents/snackme.dart';
 import 'package:vendo/models/model_user.dart';
+import 'package:vendo/models/seller_model.dart';
 
 FirebaseFirestore firestoreInstance = FirebaseFirestore.instance;
 
@@ -20,7 +21,7 @@ Future<DocumentReference> addSampleData(){
     });
 }
 
-Future<DocumentReference> addSellerRecord(Seller sellerRecord){
+Future<DocumentReference> addSellerRecord(SellerUniversal sellerRecord){
   CollectionReference sellerRec = FirebaseFirestore.instance.collection('sellers');
   return sellerRec.add(sellerRecord.toMap());
 }

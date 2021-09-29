@@ -1,0 +1,1 @@
+enum service_type {Street_Vendor, Household_Worker, Small_Shopkeeper, Farmer, Technician}
