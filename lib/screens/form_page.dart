@@ -647,9 +647,12 @@ class MyCustomFormState extends State<MyCustomForm> {
   }
 
   void buttonSubmit() {
-    print("Submitting a form!");
     // Seller seller = new Seller("sellerName", "email", "name", "phoneNumber", "profilePictureUrl", Timestamp.fromDate(DateTime.now()));
     showSnack(context, "Submitting form, Wait for results!");
+    sellerUniversal.shopPhotos = imageUpload01;
+    sellerUniversal.productListPhotos = imageUpload02;
+    sellerUniversal.productPhotos = imageUpload03;
+
     print(sellerUniversal.toMap().toString());
     var f = addSellerRecord(sellerUniversal);
     f.then((value) => showSnack(context, "Success!"))
