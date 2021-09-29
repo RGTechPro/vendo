@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vendo/commonComponents/snackme.dart';
+import 'package:vendo/firebase/bucket.dart';
 import 'package:vendo/firebase/cloudstore.dart';
 import 'package:vendo/models/model_user.dart';
 
@@ -48,6 +49,12 @@ class MyCustomFormState extends State<MyCustomForm> {
   List<bool> isHomeDeliverySelected = [true, false];
   List<bool> isLiveSelected = [true, false];
   List<bool> isFarmSelected = [true, false, false];
+
+
+  List<String> imageUpload01 = [];
+  List<String> imageUpload02 = [];
+  List<String> imageUpload03 = [];
+
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
@@ -466,11 +473,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
                                     Colors.redAccent.shade100)),
-                            onPressed: () {},
+                            onPressed: () => buttonUpload(0),
                             child: Text(
                               (isSelected[0])
-                                  ? 'Upload Street shop photos'
-                                  : 'Upload Shop photos',
+                                  ? "Upload Street shop photos (${imageUpload01.length})"
+                                  : "Upload Shop photos (${imageUpload01.length})",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 18),
                             )),
@@ -487,9 +494,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
                                     Colors.redAccent.shade100)),
-                            onPressed: () {},
+                            onPressed: () => buttonUpload(1),
                             child: Text(
-                              'Upload Products List',
+                              "Upload Products List (${imageUpload02.length})",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 18),
                             )),
@@ -506,9 +513,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
                                     Colors.redAccent.shade100)),
-                            onPressed: () {},
+                            onPressed: () => buttonUpload(2),
                             child: Text(
-                              'Upload Product Photos',
+                              "Upload Product Photos (${imageUpload03.length})",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 18),
                             )),
@@ -639,9 +646,26 @@ class MyCustomFormState extends State<MyCustomForm> {
     );
   }
 
+  void buttonUpload(int index){
+    showSnack(context, "Starting upload, this might take a while...");
+
+    var f = uploadToBucket();
+    f.then((value) => onSuccessUpload(index, value))
+    .catchError((error) => showSnack(context, "An error occured: $error"));
+  }
+
+  void onSuccessUpload(int index, String? value){
+    if(value==null) return;
+    setState(() {
+      if(index==0) imageUpload01.add(value);
+      else if(index==1) imageUpload02.add(value);
+      else if(index==2) imageUpload03.add(value);
+    });
+    showSnack(context, "Successfully Uploaded!");
+  }
+
   void buttonSubmit() {
     print("Submitting a form!");
-
     Seller seller = new Seller("sellerName", "email", "name", "phoneNumber", "profilePictureUrl", Timestamp.fromDate(DateTime.now()));
 
     showSnack(context, "Submitting form, Wait for results!");
