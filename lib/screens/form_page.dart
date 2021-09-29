@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:vendo/commonComponents/snackme.dart';
+import 'package:vendo/firebase/cloudstore.dart';
+import 'package:vendo/models/model_user.dart';
 
 class FormPage extends StatelessWidget {
   @override
@@ -625,7 +629,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                               MaterialStateProperty.all(Colors.lightGreen)),
                       child: const Text('Submit',
                           style: TextStyle(color: Colors.white, fontSize: 25)),
-                      onPressed: null,
+                      onPressed: buttonSubmit,
                     )),
               ],
             ),
@@ -633,5 +637,16 @@ class MyCustomFormState extends State<MyCustomForm> {
         ),
       ]),
     );
+  }
+
+  void buttonSubmit() {
+    print("Submitting a form!");
+
+    Seller seller = new Seller("sellerName", "email", "name", "phoneNumber", "profilePictureUrl", Timestamp.fromDate(DateTime.now()));
+
+    showSnack(context, "Submitting form, Wait for results!");
+    var f = addSellerRecord(seller);
+    f.then((value) => showSnack(context, "Success!"))
+    .catchError((error) => showSnack(context, "An error occured: $error"));
   }
 }
