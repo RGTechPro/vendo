@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:vendo/screens/Home/HomePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:vendo/screens/Home/NewMP.dart';
+import 'package:vendo/screens/Home/MapPage.dart';
+import 'package:vendo/screens/Home/StoryThing/storyHome.dart';
+//import 'package:vendo/screens/Home/NewMP.dart';
+import 'models/StoryModels/data.dart';
 import 'providers/mainProvider.dart';
 
 void main() async {
@@ -21,11 +24,12 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Vendo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomePage1(),
+        home: MapPage(),
       ),
     );
   }

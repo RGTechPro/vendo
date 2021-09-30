@@ -1,8 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:vendo/models/StoryModels/data.dart';
+
+import 'StoryThing/storyHome.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -69,7 +73,7 @@ class _MapPageState extends State<MapPage> {
     ];
 
     locationGetter();
-    
+
     Location location = new Location();
     location.onLocationChanged.listen((LocationData currentLocation) {
       // Use current location
@@ -130,56 +134,94 @@ class _MapPageState extends State<MapPage> {
         },
         child: Icon(Icons.refresh),
       ),
-      body: FlutterMap(
-        options: MapOptions(
-          center: focus,
-          zoom: 5,
-          maxZoom: 15,
-          plugins: [
-            MarkerClusterPlugin(),
-          ],
-          onTap: (_, __) => _popupController
-              .hidePopup(), // Hide popup when the map is tapped.
-        ),
-        layers: [
-          TileLayerOptions(
-            urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            subdomains: ['a', 'b', 'c'],
-          ),
-          MarkerClusterLayerOptions(
-            maxClusterRadius: 120,
-            size: Size(40, 40),
-            anchor: AnchorPos.align(AnchorAlign.center),
-            fitBoundsOptions: FitBoundsOptions(
-              padding: EdgeInsets.all(50),
+      body: Container(
+        child: Stack(
+          children: [
+            FlutterMap(
+              options: MapOptions(
+                center: focus,
+                zoom: 5,
+                maxZoom: 15,
+                plugins: [
+                  MarkerClusterPlugin(),
+                ],
+                onTap: (_, __) =>
+                    _popupController
+                        .hidePopup(), // Hide popup when the map is tapped.
+              ),
+              layers: [
+                TileLayerOptions(
+                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: ['a', 'b', 'c'],
+                ),
+                MarkerClusterLayerOptions(
+                  maxClusterRadius: 120,
+                  size: Size(40, 40),
+                  anchor: AnchorPos.align(AnchorAlign.center),
+                  fitBoundsOptions: FitBoundsOptions(
+                    padding: EdgeInsets.all(50),
+                  ),
+                  markers: markers!,
+                  polygonOptions: PolygonOptions(
+                      borderColor: Colors.blueAccent,
+                      color: Colors.black12,
+                      borderStrokeWidth: 3),
+                  popupOptions: PopupOptions(
+                      popupSnap: PopupSnap.markerTop,
+                      popupController: _popupController,
+                      popupBuilder: (_, marker) =>
+                          Container(
+                            width: 200,
+                            height: 100,
+                            color: Colors.white,
+                            child: GestureDetector(
+                              onTap: () => debugPrint('Popup tap!'),
+                              child: Text(
+                                'Container popup for marker at ${marker.point}',
+                              ),
+                            ),
+                          )),
+                  builder: (context, markers) {
+                    return FloatingActionButton(
+                      onPressed: null,
+                      child: Text(markers.length.toString()),
+                    );
+                  },
+                ),
+              ],
             ),
-            markers: markers!,
-            polygonOptions: PolygonOptions(
-                borderColor: Colors.blueAccent,
-                color: Colors.black12,
-                borderStrokeWidth: 3),
-            popupOptions: PopupOptions(
-                popupSnap: PopupSnap.markerTop,
-                popupController: _popupController,
-                popupBuilder: (_, marker) => Container(
-                      width: 200,
-                      height: 100,
-                      color: Colors.white,
-                      child: GestureDetector(
-                        onTap: () => debugPrint('Popup tap!'),
-                        child: Text(
-                          'Container popup for marker at ${marker.point}',
+
+            Container(
+              height: 80,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, index) {
+                  return Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => StoryScreen(index: index,stories: stories,)));
+                        },
+                        child: CircleAvatar(
+                          radius:30,
+
+                          backgroundImage: NetworkImage(
+                            stories[index].url,
+                          ),
                         ),
                       ),
-                    )),
-            builder: (context, markers) {
-              return FloatingActionButton(
-                onPressed: null,
-                child: Text(markers.length.toString()),
-              );
-            },
-          ),
-        ],
+                      SizedBox(width: 20,),
+                    ],
+                  );
+                },
+
+                itemCount: stories.length,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
