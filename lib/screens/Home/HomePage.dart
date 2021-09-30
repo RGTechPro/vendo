@@ -1,125 +1,71 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:flutter/painting.dart';
+import 'package:vendo/screens/Home/MapPage.dart';
+import 'package:vendo/screens/form_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Random _random = Random();
-    var markers = <Marker>[
-      Marker(
-        width: 80.0,
-        height: 80.0,
-        point: LatLng(
-            _random.nextDouble() * 10 + 48, _random.nextDouble() * 10 - 6),
-        builder: (ctx) => Container(
-            padding: EdgeInsets.all(2),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(100)),
-            child: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/p1.png'),
-            )),
-      ),
-      Marker(
-        width: 80.0,
-        height: 80.0,
-        point: LatLng(
-            _random.nextDouble() * 10 + 48, _random.nextDouble() * 10 - 6),
-        builder: (ctx) => Container(
-            padding: EdgeInsets.all(2),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(100)),
-            child: CircleAvatar(
-              backgroundColor: _ColorGenerator.getColor(),
-              backgroundImage: AssetImage('assets/images/p1.png'),
-            )),
-      ),
-      Marker(
-        width: 80.0,
-        height: 80.0,
-        point: LatLng(
-            _random.nextDouble() * 10 + 48, _random.nextDouble() * 10 - 6),
-        builder: (ctx) => Container(
-            padding: EdgeInsets.all(2),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(100)),
-            child: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/p1.png'),
-              backgroundColor: _ColorGenerator.getColor(),
-            )),
-      ),
-      Marker(
-        width: 80.0,
-        height: 80.0,
-        point: LatLng(
-            _random.nextDouble() * 10 + 48, _random.nextDouble() * 10 - 6),
-        builder: (ctx) => Container(
-            padding: EdgeInsets.all(2),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(100)),
-            child: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/p1.png'),
-              backgroundColor: _ColorGenerator.getColor(),
-            )),
-      ),
-    ];
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        body: SafeArea(
+            child: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
         child: Column(
-          children: [
-            Flexible(
-              child: FlutterMap(
-                options: MapOptions(
-                  center: LatLng(51.5, -0.09),
-                  zoom: 5.0,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Welcome to Vendo!',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold,
                 ),
-                layers: [
-                  TileLayerOptions(
-                    urlTemplate:
-                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    subdomains: ['a', 'b', 'c'],
-                    // For example purposes. It is recommended to use
-                    // TileProvider with a caching and retry strategy, like
-                    // NetworkTileProvider or CachedNetworkTileProvider
-                    tileProvider: NonCachingNetworkTileProvider(),
-                  ),
-                  MarkerLayerOptions(markers: markers),
-                ],
               ),
-            ),
-          ],
-        ),
+              SizedBox(
+                height: 30,
+              ),
+              Text('Continue as',
+                  style: TextStyle(color: Colors.black54, fontSize: 30)),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MapPage()));
+                  },
+                  child: Text('User',
+                      style: TextStyle(color: Colors.white, fontSize: 25)),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.redAccent)),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => FormPage()));
+                  },
+                  child: Text(
+                    'Seller',
+                    style: TextStyle(color: Colors.white, fontSize: 25),
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.redAccent)),
+                ),
+              )
+            ]),
       ),
-    );
-  }
-}
-
-class _ColorGenerator {
-  static List colorOptions = [
-    Colors.blue,
-    Colors.red,
-    Colors.green,
-    Colors.yellow,
-    Colors.purple,
-    Colors.orange,
-    Colors.indigo,
-    Colors.amber,
-    Colors.black,
-    Colors.white,
-    Colors.brown,
-    Colors.pink,
-    Colors.cyan
-  ];
-
-  static final Random _random = Random();
-
-  static Color getColor() {
-    return colorOptions[_random.nextInt(colorOptions.length)];
+    )));
   }
 }
