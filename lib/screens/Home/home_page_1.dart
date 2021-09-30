@@ -78,61 +78,63 @@ class HomePage1 extends StatelessWidget {
 
     ];
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Stack(
-          children: [
-            Flexible(
-              child: FlutterMap(
-                options: MapOptions(
-                  center: LatLng(28.7041, 77.1025),
-                  zoom: 5.0,
-                ),
-                layers: [
-                  TileLayerOptions(
-                    urlTemplate:
-                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    subdomains: ['a', 'b', 'c'],
-                    // For example purposes. It is recommended to use
-                    // TileProvider with a caching and retry strategy, like
-                    // NetworkTileProvider or CachedNetworkTileProvider
-                    tileProvider: NonCachingNetworkTileProvider(),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Stack(
+            children: [
+              Flexible(
+                child: FlutterMap(
+                  options: MapOptions(
+                    center: LatLng(28.7041, 77.1025),
+                    zoom: 5.0,
                   ),
-                  MarkerLayerOptions(markers: markers),
-                ],
+                  layers: [
+                    TileLayerOptions(
+                      urlTemplate:
+                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      subdomains: ['a', 'b', 'c'],
+                      // For example purposes. It is recommended to use
+                      // TileProvider with a caching and retry strategy, like
+                      // NetworkTileProvider or CachedNetworkTileProvider
+                      tileProvider: NonCachingNetworkTileProvider(),
+                    ),
+                    MarkerLayerOptions(markers: markers),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              height: 80,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, index) {
-                  return Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => StoryScreen(index: index,stories: stories,)));
-                        },
-                        child: CircleAvatar(
-                          radius:30,
+              Container(
+                height: 80,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, index) {
+                    return Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => StoryScreen(index: index,stories: stories,)));
+                          },
+                          child: CircleAvatar(
+                            radius:30,
 
-                          backgroundImage: NetworkImage(
-                            stories[index].url,
+                            backgroundImage: NetworkImage(
+                              stories[index].url,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 20,),
-                    ],
-                  );
-                },
+                        SizedBox(width: 20,),
+                      ],
+                    );
+                  },
 
-                itemCount: stories.length,
-              ),
-            )
+                  itemCount: stories.length,
+                ),
+              )
 
-          ],
+            ],
+          ),
         ),
       ),
     );
