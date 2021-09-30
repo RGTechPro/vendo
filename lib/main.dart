@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vendo/screens/Home/HomePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:vendo/screens/Home/HomePage1.dart';
+import 'package:vendo/screens/Home/home_page_1.dart';
 import 'package:vendo/screens/Home/MapPage.dart';
 import 'package:vendo/screens/Home/StoryThing/storyHome.dart';
 //import 'package:vendo/screens/Home/NewMP.dart';
