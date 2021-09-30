@@ -6,12 +6,15 @@ import 'package:vendo/enumerations/farmer_type.dart';
 import 'package:vendo/enumerations/service_type.dart';
 import 'package:vendo/firebase/bucket.dart';
 import 'package:vendo/firebase/cloudstore.dart';
-import 'package:vendo/models/model_user.dart';
+import 'package:provider/provider.dart';
+import 'package:vendo/providers/mainProvider.dart';
 import 'package:vendo/models/seller_model.dart';
 
 class FormPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Provider.of<SellerProvider>(context, listen: false).sellerUniversal =
+        SellerUniversal.fromDefault();
     final appTitle = 'Form';
     return MaterialApp(
       title: appTitle,
@@ -54,8 +57,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   List<bool> isFarmSelected = [true, false, false];
 
   service_type serviceType = service_type.Street_Vendor;
-  SellerUniversal sellerUniversal = new SellerUniversal.fromDefault();
-  
+
   List<String> imageUpload01 = [];
   List<String> imageUpload02 = [];
   List<String> imageUpload03 = [];
@@ -63,6 +65,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
+
     return SafeArea(
       child: ListView(children: [
         Padding(
@@ -107,7 +110,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                             serviceType = service_type.values.elementAt(index);
                             isSelected[serviceType.index] = true;
                           });
-                          sellerUniversal.serviceType = serviceType;
+                          Provider.of<SellerProvider>(context, listen: false)
+                              .sellerUniversal!
+                              .serviceType = serviceType;
                         },
                         isSelected: isSelected),
                   ]),
@@ -130,7 +135,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    onChanged:(value){sellerUniversal.fullName = value;},
+                    onChanged: (value) {
+                      Provider.of<SellerProvider>(context, listen: false)
+                          .sellerUniversal!
+                          .fullName = value;
+                    },
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
                           borderSide: BorderSide.none,
@@ -146,7 +155,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    onChanged:(value){sellerUniversal.phoneNo = value;},
+                    onChanged: (value) {
+                      Provider.of<SellerProvider>(context, listen: false)
+                          .sellerUniversal!
+                          .phoneNo = value;
+                    },
                     keyboardType: TextInputType.phone,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
@@ -166,7 +179,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    onChanged:(value){sellerUniversal.date = dateCtl.text;},
+                    onChanged: (value) {
+                      Provider.of<SellerProvider>(context, listen: false)
+                          .sellerUniversal!
+                          .date = dateCtl.text;
+                    },
                     controller: dateCtl,
                     onTap: () async {
                       DateTime date = DateTime(1900);
@@ -223,7 +240,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                             ),
                           ],
                           onPressed: (int index) {
-                            sellerUniversal.gender = index;
+                            Provider.of<SellerProvider>(context, listen: false)
+                                .sellerUniversal!
+                                .gender = index;
                             setState(() {
                               isGenderSelected = [false, false, false];
                               isGenderSelected[index] = true;
@@ -260,7 +279,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                             ),
                           ],
                           onPressed: (int index) {
-                            sellerUniversal.isSpeciallyAbled = index == 0 ? true : false;
+                            Provider.of<SellerProvider>(context, listen: false)
+                                .sellerUniversal!
+                                .isSpeciallyAbled = index == 0 ? true : false;
                             setState(() {
                               isSpecialSelected = [false, false];
                               isSpecialSelected[index] = true;
@@ -273,7 +294,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    onChanged: (value){sellerUniversal.aadharNumber=value;},
+                    onChanged: (value) {
+                      Provider.of<SellerProvider>(context, listen: false)
+                          .sellerUniversal!
+                          .aadharNumber = value;
+                    },
                     keyboardType: TextInputType.phone,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
@@ -292,7 +317,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    onChanged: (value){sellerUniversal.localName=value;},
+                    onChanged: (value) {
+                      Provider.of<SellerProvider>(context, listen: false)
+                          .sellerUniversal!
+                          .localName = value;
+                    },
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
                           borderSide: BorderSide.none,
@@ -308,7 +337,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    onChanged: (value){sellerUniversal.address=value;},
+                    onChanged: (value) {
+                      Provider.of<SellerProvider>(context, listen: false)
+                          .sellerUniversal!
+                          .address = value;
+                    },
                     maxLines: 2,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
@@ -325,7 +358,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    onChanged: (value){sellerUniversal.timing=value;},
+                    onChanged: (value) {
+                      Provider.of<SellerProvider>(context, listen: false)
+                          .sellerUniversal!
+                          .timing = value;
+                    },
                     keyboardType: TextInputType.datetime,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
@@ -371,7 +408,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                               ),
                             ],
                             onPressed: (int index) {
-                              sellerUniversal.farmerType = farmer_type.values.elementAt(index);
+                              Provider.of<SellerProvider>(context,
+                                          listen: false)
+                                      .sellerUniversal!
+                                      .farmerType =
+                                  farmer_type.values.elementAt(index);
                               setState(() {
                                 isFarmSelected = [false, false, false];
                                 isFarmSelected[index] = true;
@@ -385,7 +426,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
-                      onChanged: (value){sellerUniversal.servicesProvided=value;},
+                      onChanged: (value) {
+                        Provider.of<SellerProvider>(context, listen: false)
+                            .sellerUniversal!
+                            .servicesProvided = value;
+                      },
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderSide: BorderSide.none,
@@ -403,7 +448,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
-                      onChanged: (value){sellerUniversal.charges=value;},
+                      onChanged: (value) {
+                        Provider.of<SellerProvider>(context, listen: false)
+                            .sellerUniversal!
+                            .charges = value;
+                      },
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
@@ -421,7 +470,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    onChanged: (value){sellerUniversal.description=value;},
+                    onChanged: (value) {
+                      Provider.of<SellerProvider>(context, listen: false)
+                          .sellerUniversal!
+                          .description = value;
+                    },
                     maxLines: 2,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
@@ -439,7 +492,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: TextFormField(
-                      onChanged: (value){sellerUniversal.shopName=value;},
+                      onChanged: (value) {
+                        Provider.of<SellerProvider>(context, listen: false)
+                            .sellerUniversal!
+                            .shopName = value;
+                      },
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                             borderSide: BorderSide.none,
@@ -519,7 +576,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
-                      onChanged: (value){sellerUniversal.packagingInfo=value;},
+                      onChanged: (value) {
+                        Provider.of<SellerProvider>(context, listen: false)
+                            .sellerUniversal!
+                            .packagingInfo = value;
+                      },
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderSide: BorderSide.none,
@@ -561,10 +622,14 @@ class MyCustomFormState extends State<MyCustomForm> {
                               ),
                             ],
                             onPressed: (int index) {
-                              sellerUniversal.isHomeDeliveryAvaliable = index==0?true:false;
+                              Provider.of<SellerProvider>(context,
+                                          listen: false)
+                                      .sellerUniversal!
+                                      .isHomeDeliveryAvaliable =
+                                  index == 0 ? true : false;
                               setState(() {
-                                isSelected = [false, false];
-                                isSelected[index] = true;
+                                isHomeDeliverySelected = [false, false];
+                                isHomeDeliverySelected[index] = true;
                               });
                             },
                             isSelected: isHomeDeliverySelected),
@@ -599,7 +664,11 @@ class MyCustomFormState extends State<MyCustomForm> {
                               ),
                             ],
                             onPressed: (int index) {
-                              sellerUniversal.isHomeDeliveryAvaliable = index==0?true:false;
+                              Provider.of<SellerProvider>(context,
+                                          listen: false)
+                                      .sellerUniversal!
+                                      .isHomeDeliveryAvaliable =
+                                  index == 0 ? true : false;
                               setState(() {
                                 isLiveSelected = [false, false];
                                 isLiveSelected[index] = true;
@@ -628,20 +697,23 @@ class MyCustomFormState extends State<MyCustomForm> {
     );
   }
 
-  void buttonUpload(int index){
+  void buttonUpload(int index) {
     showSnack(context, "Starting upload, this might take a while...");
 
     var f = uploadToBucket();
-    f.then((value) => onSuccessUpload(index, value))
-    .catchError((error) => showSnack(context, "An error occured: $error"));
+    f
+        .then((value) => onSuccessUpload(index, value))
+        .catchError((error) => showSnack(context, "An error occured: $error"));
   }
 
-  void onSuccessUpload(int index, String? value){
-    if(value==null) return;
+  void onSuccessUpload(int index, String? value) {
+    if (value == null) return;
     setState(() {
-      if(index==0) imageUpload01.add(value);
-      else if(index==1) imageUpload02.add(value);
-      else if(index==2) imageUpload03.add(value);
+      if (index == 0)
+        imageUpload01.add(value);
+      else if (index == 1)
+        imageUpload02.add(value);
+      else if (index == 2) imageUpload03.add(value);
     });
     showSnack(context, "Successfully Uploaded!");
   }
@@ -649,13 +721,24 @@ class MyCustomFormState extends State<MyCustomForm> {
   void buttonSubmit() {
     // Seller seller = new Seller("sellerName", "email", "name", "phoneNumber", "profilePictureUrl", Timestamp.fromDate(DateTime.now()));
     showSnack(context, "Submitting form, Wait for results!");
-    sellerUniversal.shopPhotos = imageUpload01;
-    sellerUniversal.productListPhotos = imageUpload02;
-    sellerUniversal.productPhotos = imageUpload03;
+    Provider.of<SellerProvider>(context, listen: false)
+        .sellerUniversal!
+        .shopPhotos = imageUpload01;
+    Provider.of<SellerProvider>(context, listen: false)
+        .sellerUniversal!
+        .productListPhotos = imageUpload02;
+    Provider.of<SellerProvider>(context, listen: false)
+        .sellerUniversal!
+        .productPhotos = imageUpload03;
 
-    print(sellerUniversal.toMap().toString());
-    var f = addSellerRecord(sellerUniversal);
-    f.then((value) => showSnack(context, "Success!"))
-    .catchError((error) => showSnack(context, "An error occured: $error"));
+    print(Provider.of<SellerProvider>(context, listen: false)
+        .sellerUniversal!
+        .toMap()
+        .toString());
+    var f = addSellerRecord(
+        Provider.of<SellerProvider>(context, listen: false).sellerUniversal!);
+    f
+        .then((value) => showSnack(context, "Success!"))
+        .catchError((error) => showSnack(context, "An error occured: $error"));
   }
 }
