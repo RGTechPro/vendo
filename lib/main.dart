@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vendo/screens/Home/HomePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:vendo/screens/Home/HomePage1.dart';
 import 'package:vendo/screens/Home/MapPage.dart';
 import 'package:vendo/screens/Home/StoryThing/storyHome.dart';
 //import 'package:vendo/screens/Home/NewMP.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomePage(),
+        home: HomePage1(),
       ),
     );
   }
